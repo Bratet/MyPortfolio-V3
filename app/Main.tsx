@@ -84,7 +84,7 @@ export default function Home({ posts }) {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="max-w-3xl text-lg text-gray-500 dark:text-gray-400"
           >
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex flex-wrap items-center gap-1">
               Press{' '}
               <kbd className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1 text-sm font-semibold text-gray-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
                 Ctrl
@@ -93,7 +93,10 @@ export default function Home({ posts }) {
               <kbd className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1 text-sm font-semibold text-gray-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
                 K
               </kbd>{' '}
-              or{' '}
+              <span className="hidden sm:inline">or</span>{' '}
+              <span className="inline sm:hidden">
+                /<br />
+              </span>
               <kbd className="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1 text-sm font-semibold text-gray-800 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
                 ⌘
               </kbd>
