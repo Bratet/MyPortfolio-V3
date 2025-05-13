@@ -173,3 +173,22 @@ input:-webkit-autofill:focus {
   display: inline-block;
   vertical-align: middle;
 }
+
+/* Custom highlight gradient classes */
+.bg-gradient-highlight {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-primary-400) 30%, transparent),
+    color-mix(in srgb, var(--color-primary-400) 30%, transparent)
+  );
+  background-size: 100% 100%;
+}
+
+.bg-gradient-highlight-dark {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-primary-400) 50%, transparent),
+    color-mix(in srgb, var(--color-primary-400) 50%, transparent)
+  );
+  background-size: 100% 100%;
+}

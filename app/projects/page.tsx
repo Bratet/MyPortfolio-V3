@@ -9,10 +9,7 @@ export default function Projects() {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <AnimatedTitle
-          title="Projects"
-          description="Showcase your projects with a hero image (16 x 9)"
-        />
+        <AnimatedTitle title="Projects" description="List of projects I've worked on" />
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
             {projectsData.map((d) => (
