@@ -39,16 +39,8 @@ const ExperienceCard = ({
       initial={{ opacity: 0, x: -50 }}
       animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="relative border-l-2 border-gray-200 pb-8 pl-8 dark:border-gray-700"
+      className="relative"
     >
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={isInView ? { scale: 1 } : { scale: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
-        className="absolute -left-3 mt-1.5 h-6 w-6 rounded-full border-2 border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800"
-      >
-        {logo && <Image alt={company} src={logo} className="rounded-full" width={24} height={24} />}
-      </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -58,7 +50,16 @@ const ExperienceCard = ({
         <div className="p-6">
           <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">
+              <h2 className="flex items-center text-2xl font-bold tracking-tight">
+                {logo && (
+                  <Image
+                    alt={company}
+                    src={logo}
+                    className="mr-3 rounded-full"
+                    width={32}
+                    height={32}
+                  />
+                )}
                 {website ? (
                   <Link href={website} aria-label={`Link to ${company}`}>
                     {company}
@@ -79,7 +80,7 @@ const ExperienceCard = ({
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="prose mb-4 text-gray-500 dark:text-gray-400"
+            className="mb-4 max-w-full text-gray-500 dark:text-gray-400"
           >
             {description}
           </motion.p>
@@ -90,7 +91,9 @@ const ExperienceCard = ({
             transition={{ duration: 0.5, delay: 0.5 }}
             className="mb-4"
           >
-            <h4 className="mb-2 text-lg font-semibold">Key Achievements:</h4>
+            <h4 className="text-primary-500 dark:text-primary-400 mb-2 text-lg font-semibold">
+              Key Achievements:
+            </h4>
             <ul className="list-inside list-disc space-y-1 text-gray-500 dark:text-gray-400">
               {achievements.map((achievement, index) => (
                 <motion.li

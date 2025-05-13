@@ -2,7 +2,8 @@ const headerNavLinks = [
   { href: '/', title: 'Home' },
   { href: '/blog', title: 'Blog' },
   { href: '/tags', title: 'Tags' },
-  { href: '/projects', title: 'Projects' },
+  // TO REMOVE: AFTER ADDING PROJECTS PAGE
+  // { href: '/projects', title: 'Projects' },
   { href: '/experiences', title: 'Experiences' },
   { href: '/about', title: 'About' },
 ]

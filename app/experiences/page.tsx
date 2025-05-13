@@ -14,7 +14,7 @@ export default function Experience() {
           description="My professional journey and work experience"
         />
         <div className="container py-12">
-          <div className="space-y-8">
+          <div className="space-y-16">
             {experiencesData.map((experience) => (
               <ExperienceCard
                 key={`${experience.company}-${experience.position}`}

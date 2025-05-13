@@ -124,12 +124,13 @@ export default function Home({ posts }) {
           >
             Explore Topics
           </Link>
-          <Link
+          {/* TO REMOVE: AFTER ADDING PROJECTS PAGE */}
+          {/* <Link
             href="/projects"
             className="hover:bg-primary-500 dark:hover:bg-primary-500 rounded-lg bg-gray-100 px-6 py-2.5 text-center font-medium text-gray-900 transition-all duration-200 hover:text-white dark:bg-gray-800 dark:text-gray-100"
           >
             View Projects
-          </Link>
+          </Link> */}
           <Link
             href="/experiences"
             className="hover:bg-primary-500 dark:hover:bg-primary-500 rounded-lg bg-gray-100 px-6 py-2.5 text-center font-medium text-gray-900 transition-all duration-200 hover:text-white dark:bg-gray-800 dark:text-gray-100"
