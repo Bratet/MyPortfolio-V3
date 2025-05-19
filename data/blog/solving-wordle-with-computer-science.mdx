@@ -1,0 +1,839 @@
+---
+title: 'Solving Wordle With Computer Science'
+date: '2024-11-04'
+lastmod: '2024-11-04'
+tags: ['Algorithms', 'Information Theory']
+draft: false
+summary: 'Exploring diffrents methods and approaches in order to find the best strategy for solving Wordle. Learn how to use computer science to solve Wordle.'
+images: ['/static/images/blog/solving-wordle-with-computer-science/wordle.png']
+---
+
+## Introduction
+
+Wordle burst onto the gaming scene in late 2021, captivating millions with its elegant simplicity. Players have six attempts to guess a five-letter word, with colored feedback after each guess: green for correct letter and position, yellow for correct letter but wrong position, and gray for letters not in the target word.
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <img
+    src="/static/images/blog/solving-wordle-with-computer-science/wordle.png"
+    alt="Wordle"
+    width="600"
+  />
+</div>
+
+From a computer science perspective, Wordle is fascinating because it creates a perfect environment for algorithmic problem-solving. The game offers a finite search space and provides deterministic feedback that systematically narrows this space with each guess. With optimal strategy, computer scientists have shown that any Wordle puzzle can be solved within six moves.
+
+But what makes a strategy "optimal"? Is it one that maximizes information gain with each guess? One that minimizes worst-case scenarios? Or perhaps one that leverages English language patterns?
+
+In this article, we'll explore three distinct algorithmic approaches to solving Wordle:
+
+1. **Frequency-based analysis**, leveraging statistical patterns in English words
+2. **Entropy-based strategy**, applying information theory to maximize uncertainty reduction
+3. **Minimax approach**, using game theory principles to minimize worst possible outcomes
+
+Join me as we decode Wordle through computational thinking and discover which approach truly masters this popular word game.
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## Implementing the Game Logic
+
+At the heart of our Wordle solving system is a robust implementation of the game's core mechanics. Before we can develop strategies to solve the puzzle, we need to faithfully recreate the game's behavior in code. Let's examine the architecture of the `Wordle` class that serves as the foundation for our solving strategies.
+
+### The Wordle Class Structure
+
+Our implementation encapsulates all the essential elements of the original game:
+
+```python
+class Wordle:
+    def __init__(self, word_length=5, max_attempts=6, target_word=None, allowed_words=None, possible_words=None):
+        """Initialize the Wordle game with a list of words"""
+        self.word_length = word_length
+        self.max_attempts = max_attempts
+        self.attempts = 0
+        self.guesses = []
+        self.feedbacks = []
+
+        # Load word lists from files
+        with open(allowed_words, "r") as file:
+            self.word_list = [line.strip() for line in file]
+
+        with open(possible_words, "r") as file:
+            self.target_word_list = [line.strip() for line in file]
+
+        if target_word is None:
+            # Select a random target word
+            self.target_word = random.choice(self.target_word_list)
+        else:
+            self.target_word = target_word
+```
+
+The constructor takes several parameters that allow for customization of the game experience:
+
+- `word_length`: The length of the target word (default is 5)
+- `max_attempts`: The maximum number of guesses allowed (default is 6)
+- `target_word`: An optional specific word to use as the answer
+- `allowed_words`: File path containing all valid guessable words
+- `possible_words`: File path containing potential target words
+
+This design separates the concept of "allowed words" (valid guesses) from "possible words" (potential targets), mirroring the actual Wordle game design where the solution space is smaller than the valid guess space.
+
+### Core Game Mechanics
+
+The class implements several key methods that handle the game's logic:
+
+1. **Word Validation**:
+
+```python
+def is_valid_word(self, word: str) -> bool:
+    """Check if a word is valid (right length and in word list)"""
+    return word.lower() in self.word_list
+```
+
+2. **Processing Guesses**:
+
+```python
+def make_guess(self, guess: str) -> Tuple[bool, List[str], str]:
+    """
+    Process a guess and return:
+    - Whether the guess is correct
+    - Feedback as a list of colored positions
+    - Error message if any
+    """
+```
+
+3. **Feedback Generation**:
+
+```python
+def generate_feedback(self, guess: str) -> List[str]:
+    """
+    Generate feedback for a guess:
+    - "G": correct letter, correct position
+    - "Y": correct letter, wrong position
+    - "_": letter not in word
+    """
+```
+
+The feedback generation is particularly important and implements the exact rules of Wordle, including the nuanced handling of duplicate letters:
+
+```python
+# Count occurrences of each letter in the target word
+letter_count = {}
+for char in self.target_word:
+    if char in letter_count:
+        letter_count[char] += 1
+    else:
+        letter_count[char] = 1
+
+# First pass: Mark correct positions
+for i in range(self.word_length):
+    if guess[i] == self.target_word[i]:
+        feedback[i] = "G"
+        letter_count[guess[i]] -= 1
+
+# Second pass: Mark correct letters in wrong positions
+for i in range(self.word_length):
+    if feedback[i] == "_" and guess[i] in letter_count and letter_count[guess[i]] > 0:
+        feedback[i] = "Y"
+        letter_count[guess[i]] -= 1
+```
+
+This two-pass approach correctly handles instances where a letter appears multiple times in either the guess or target word. Green positions (correct letter, correct position) are prioritized before yellow positions (correct letter, wrong position), and each letter in the target word can only provide feedback once.
+
+### Game State Management
+
+The class also maintains the game state and provides methods to reset the game or retrieve the current state:
+
+```python
+def reset_game(self, target_word=None):
+    """Reset the game with a new word"""
+
+def get_game_state(self):
+    """Return the current game state"""
+    return {
+        "attempts": self.attempts,
+        "max_attempts": self.max_attempts,
+        "guesses": self.guesses,
+        "feedbacks": self.feedbacks,
+        "game_over": self.attempts >= self.max_attempts or
+                     (self.guesses and self.guesses[-1] == self.target_word),
+        "won": self.guesses and self.guesses[-1] == self.target_word
+    }
+```
+
+The `get_game_state` method returns a comprehensive dictionary of the current game status, making it easy for our solver algorithms to interact with the game.
+
+### Design Decisions
+
+Several key design decisions enhance the robustness and flexibility of our implementation:
+
+1. **Type Annotations**: The use of Python's type hints (`List[str]`, `Tuple[bool, List[str], str]`) improves code readability and enables better IDE support.
+2. **Error Handling**: The `make_guess` method returns detailed error messages for invalid inputs, allowing for graceful failure handling.
+3. **Separation of Concerns**: The class cleanly separates different aspects of the game logic, making it easier to modify or extend functionality.
+4. **Immutable Target Word**: Once a game is initialized, the target word remains fixed until an explicit reset, ensuring game integrity.
+
+This implementation forms the foundation upon which we can build our solving strategies. By accurately recreating the game's behavior, we ensure that our algorithms will be evaluated against an authentic Wordle experience, allowing for meaningful comparisons between different approaches.
+
+## The Solver Framework
+
+Now that we've got a working Wordle game, we need to build something that can actually solve it. I decided to create a flexible framework that would let me experiment with different solving strategies without rewriting the same code over and over again.
+
+### The Strategy Pattern
+
+I went with an object-oriented approach using the Strategy pattern. This lets me swap out different solving algorithms while keeping the core solving logic consistent. The heart of this design is the `AbstractStrategy` class:
+
+```python
+from abc import ABC, abstractmethod
+
+class AbstractStrategy(ABC):
+    def __init__(self, vocabulary='data/allowed_words.txt'):
+        with open(vocabulary, 'r') as file:
+            # Convert all words to lowercase for consistent comparison
+            self.vocabulary = [line.strip().lower() for line in file]
+
+        # Initialize previous guesses tracking
+        self.previous_guesses = set()
+```
+
+This abstract base class handles loading the vocabulary and tracking which words we've already guessed. All the specific strategies will inherit from this, which means I don't have to reimplement these common features for each approach.
+
+### The Word Space Reducer
+
+One of the trickiest parts of Wordle is correctly interpreting the feedback and figuring out which words are still possible. I spent a lot of time getting this right because it's where many solvers break down.
+
+The `_reduce_words_space` method takes a guess, the possible words left, and the feedback we received, then returns a filtered list of words that still match:
+
+```python
+def _reduce_words_space(self, guess, possible_words, feedback):
+    # Convert guess to lowercase for consistency
+    guess = guess.lower()
+    new_word_space = possible_words.copy()
+
+    # First pass: Handle 'G' (green) matches
+    for i, sign in enumerate(feedback):
+        if sign == 'G':
+            new_word_space = [word for word in new_word_space if guess[i] == word[i]]
+
+    # Second pass: Handle 'Y' (yellow) matches
+    for i, sign in enumerate(feedback):
+        if sign == 'Y':
+            # Letter is in the word but not at this position
+            new_word_space = [word for word in new_word_space if
+                            (guess[i] in word and guess[i] != word[i])]
+```
+
+The real headache was handling duplicate letters correctly. If you've played Wordle, you know that a letter might show up as gray even if it appears elsewhere in the word. This happens when you guess a letter more times than it actually appears in the target word. Here's how I handled it:
+
+```python
+# Third pass: Handle '_' (gray/blank) - letter not in word
+gray_letters = {guess[i] for i, sign in enumerate(feedback) if sign == '_'}
+
+# For each gray letter, we need to check if it appears elsewhere as green or yellow
+for gray_letter in gray_letters:
+    # Count how many times this letter appears as green or yellow
+    green_yellow_count = sum(1 for i, sign in enumerate(feedback)
+                        if (sign == 'G' or sign == 'Y') and guess[i] == gray_letter)
+
+    # If it never appears as green or yellow, it's not in the word
+    if green_yellow_count == 0:
+        new_word_space = [word for word in new_word_space if gray_letter not in word]
+    else:
+        # If it appears as green or yellow, then the allowed count is exactly that number
+        for word in new_word_space.copy():
+            if word.count(gray_letter) > green_yellow_count:
+                new_word_space.remove(word)
+```
+
+I spent a whole evening debugging this section. It turns out that if you guess "HELLO" and the target is "HELP", the second 'L' gets marked gray because there's only one 'L' in the target. My initial implementation would incorrectly eliminate all words with 'L', which is obviously wrong.
+
+### The Main Solver Algorithm
+
+The `solve` method ties everything together:
+
+```python
+def solve(self, game):
+    possible_words = self.vocabulary.copy()
+    attempts = 0
+    self.previous_guesses = set()
+
+    # Get the game's max attempts
+    max_attempts = 6  # Standard Wordle limit
+
+    while attempts < max_attempts:
+        guess = self.choose_best_guess(possible_words, attempts)
+
+        # Add to our set of previous guesses BEFORE making the guess
+        self.previous_guesses.add(guess)
+
+        attempts += 1
+
+        is_correct, feedback, error_msg = game.make_guess(guess)
+
+        # Check for errors
+        if error_msg:
+            print(f"Error: {error_msg}")
+            continue
+
+        # Check for correct guess
+        if is_correct:
+            return guess, attempts
+
+        # Reduce the search space based on feedback
+        possible_words = self._reduce_words_space(guess, possible_words, feedback)
+```
+
+The algorithm follows a pretty straightforward loop:
+
+1. Pick the best guess based on our current strategy
+2. Send that guess to the game
+3. If we got it right, we're done!
+4. Otherwise, use the feedback to filter our word list
+5. Repeat until we run out of attempts
+
+There's also a little optimization I added:
+
+```python
+# If only one word remains and we still have attempts, just guess it
+if len(possible_words) == 1 and attempts < max_attempts:
+    final_guess = possible_words[0]
+
+    # Skip if we already tried this word
+    if final_guess in self.previous_guesses and final_guess != guess:
+        continue
+
+    # Otherwise make this our final guess
+    self.previous_guesses.add(final_guess)
+    attempts += 1
+    is_correct, _, error_msg = game.make_guess(final_guess)
+
+    if is_correct:
+        return final_guess, attempts
+    else:
+        break
+```
+
+This basically says "if there's only one possible word left, just guess it immediately instead of running through the strategy logic." This saves some computation and makes sense intuitively.
+
+### The Strategy Interface
+
+The key method that each strategy needs to implement is `choose_best_guess`:
+
+```python
+@abstractmethod
+def choose_best_guess(self, possible_words, attempts):
+    pass
+```
+
+This is where the magic happens. Each strategy will have its own algorithm for picking what it thinks is the optimal next guess. The method gets the current list of possible words and how many attempts we've made so far, and returns a single word to guess.
+
+With this framework in place, I can now implement my three different approaches - frequency-based, entropy-based, and minimax-based strategies - without having to rewrite all the common logic for each one. In the next sections, I'll dive into exactly how each of these strategies works.
+
+## Strategy 1: Entropy-Based Approach
+
+The first strategy I implemented was based on information theory - specifically using the concept of entropy to maximize how much we learn from each guess. This turned out to be one of the most effective approaches, though it's also computationally expensive.
+
+### The Theory Behind Entropy-Based Solving
+
+In information theory, entropy measures uncertainty or randomness in a system. The more uncertain a situation is, the higher its entropy. What's cool is that we can also think of entropy as a measure of information content - the more information we gain, the more we reduce uncertainty.
+
+For Wordle, I wanted to pick guesses that would give me the most information about what the target word could be. Mathematically, this means finding the guess that maximizes the expected information gain - or equivalently, the guess that minimizes the expected entropy of the remaining word set.
+
+The entropy of a discrete random variable $X$ with possible values ${x_1, x_2, ..., x_n}$ and probability mass function $P(X)$ is given by:
+
+$$
+H(X) = -\sum_{i=1}^{n} P(x_i) \log_2 P(x_i)
+$$
+
+In our case, $X$ is the target word, and $P(x_i)$ is the probability of each possible word being the answer. After each guess, we update these probabilities based on the feedback.
+
+### Implementing the Entropy-Based Strategy
+
+Here's the core logic of my implementation:
+
+```python
+class EntropyBasedStrategy(AbstractStrategy):
+
+    def choose_best_guess(self, possible_words, attempts):
+
+        if attempts == 0:
+            return 'tares'  # pre-computed optimal first guess
+
+        # If there's only one possibility, return it immediately
+        if len(possible_words) == 1:
+            return possible_words[0]
+```
+
+I start with two shortcuts:
+
+1. For the first guess, I hardcoded "TARES" - which I calculated offline as the optimal first word (more on that later)
+2. If there's only one word left, just guess it immediately
+
+The real work happens next:
+
+```python
+best_expected_entropy = -1
+best_guess = None
+
+# Consider ALL vocabulary words as potential guesses
+# but skip words we've already guessed
+for candidate_word in self.vocabulary:
+
+    # Skip words we've already guessed
+    if candidate_word in self.previous_guesses:
+        continue
+
+    feedback_patterns = {}
+
+    # But only evaluate against remaining possible solutions
+    for target_word in possible_words:
+        pattern = self._generate_feedback(candidate_word, target_word)
+
+        if pattern not in feedback_patterns:
+            feedback_patterns[pattern] = 0
+        feedback_patterns[pattern] += 1
+```
+
+This part is pretty computationally intensive. For each word in our entire vocabulary (not just the possible answers), I simulate what would happen if we guessed it against every remaining possible target word. The `feedback_patterns` dictionary keeps track of how many words would give each possible feedback pattern.
+
+For example, if I guess "CRANE" and there are 100 possible target words left, maybe:
+
+- 5 would give the pattern "G\_\_\_\_" (just the C is correct)
+- 12 would give "Y\_\_\_\_" (C is in the word but not in position 1)
+- 83 would give "**\_**" (no letters match)
+
+The key insight is that the more evenly distributed these patterns are, the more information we gain from that guess. If all 100 words give the same pattern, we learn nothing. But if we split the possibilities evenly, we eliminate a ton of options.
+
+### Calculating Expected Entropy
+
+Now comes the actual entropy calculation:
+
+```python
+# Calculate expected entropy
+expected_entropy = 0
+
+for pattern, num_remaining_words in feedback_patterns.items():
+    probability = num_remaining_words / len(possible_words)
+    # Add a small epsilon to avoid log(0)
+    expected_entropy -= probability * np.log2(probability + 1e-10)
+
+if expected_entropy > best_expected_entropy:
+    best_guess = candidate_word
+    best_expected_entropy = expected_entropy
+```
+
+For each possible feedback pattern, I calculate:
+
+1. The probability of getting that pattern (number of words with that pattern divided by total possible words)
+2. The information content of that outcome (log base 2 of the probability)
+3. The weighted contribution to the expected entropy
+
+Mathematically, I'm computing:
+
+$$
+\text{Expected Entropy} = -\sum_{\text{patterns}} P(\text{pattern}) \log_2 P(\text{pattern})
+$$
+
+The tiny value `1e-10` is just there to avoid the math error of taking log(0).
+
+After checking all candidate words, I pick the one with the highest expected entropy. This is the word that, on average, will give us the most information.
+
+### Why This Works So Well
+
+This approach mimics what skilled human players do intuitively - they try to make guesses that will eliminate as many possibilities as possible. But it does so with mathematical precision.
+
+For example, imagine we're down to just a few possible words like "BATCH", "CATCH", "MATCH", "PATCH". A human would realize that guessing "LATCH" (which isn't the answer) would perfectly tell us which of those four is correct based on the first letter.
+
+The entropy calculation captures exactly this intuition. If we guess "LATCH", we get:
+
+- 25% chance of "YGGGG" (if target is BATCH)
+- 25% chance of "YGGGG" (if target is CATCH)
+- etc.
+
+This gives an entropy of exactly 2 bits - which is the theoretical maximum for distinguishing between 4 equally likely options.
+
+### Optimizations and Challenges
+
+The biggest downside to this approach is performance. For every potential guess, I have to simulate feedback against every possible target word. In the worst case, that's 13,000 guesses × 2,300 potential targets = about 30 million operations!
+
+To speed things up:
+
+1. I pre-computed the optimal first guess ("TARES")
+2. I skip words we've already guessed
+3. I immediately return if there's only one word left
+
+Even with these optimizations, this strategy is still the slowest of the three I implemented. But it's also consistently the most effective at minimizing the number of guesses needed to find the answer.
+
+## Strategy 2: Frequency-Based Approach
+
+After implementing the entropy-based strategy, I realized I needed something more computationally efficient. The frequency-based approach was my answer to this - it's much faster while still being reasonably effective.
+
+### The Logic Behind Letter Frequencies
+
+Instead of calculating complex information theory metrics, the frequency strategy uses a more straightforward heuristic: words containing the most common letters in the remaining possible words are likely to be good guesses.
+
+The key insight is that if a letter appears frequently in possible target words, guessing a word with that letter will help us eliminate possibilities quickly. For example, if 80% of remaining words contain 'E', then guessing a word with 'E' will give us useful information no matter what the feedback is.
+
+But there's a crucial detail here - in Wordle, position matters. The letter 'S' might be common at the end of words but rare at the beginning. So I track letter frequencies at each specific position, not just overall.
+
+### Implementation Details
+
+Let's walk through how I implemented this strategy:
+
+```python
+def choose_best_guess(self, possible_words, attempts):
+
+    if attempts == 0:
+        return 'cares' # pre-computed optimal first guess
+
+    # If there's only one possibility, return it immediately
+    if len(possible_words) == 1:
+        return possible_words[0]
+```
+
+Similar to the entropy approach, I use a pre-computed first guess and a shortcut for when only one word remains. For this strategy, I found "CARES" to be slightly better than "TARES" based on my testing, though both work well.
+
+The next part is where the frequency analysis happens:
+
+```python
+# Calculate letter frequencies in each position
+position_frequencies = [defaultdict(int) for _ in range(5)]
+
+# Count frequency of each letter at each position
+for word in possible_words:
+    for position, letter in enumerate(word):
+        position_frequencies[position][letter] += 1
+```
+
+I create a list of five dictionaries (one for each position), where each dictionary maps letters to their frequency count at that position. After processing all possible words, I might have something like:
+
+```
+Position 0: {'c': 120, 's': 85, 'b': 76, ...}
+Position 1: {'a': 210, 'o': 135, 'r': 95, ...}
+...and so on
+```
+
+This tells me that 'c' appears as the first letter in 120 possible words, 'a' appears as the second letter in 210 possible words, etc.
+
+### Scoring Potential Guesses
+
+Once I have the frequency data, I use it to score each potential guess:
+
+```python
+best_score = -1
+best_guess = None
+
+# Consider ALL vocabulary words as potential guesses
+# but skip words we've already guessed
+for candidate_word in self.vocabulary:
+
+    # Skip words we've already guessed
+    if candidate_word in self.previous_guesses:
+        continue
+
+    # Calculate score based on position-specific letter frequencies
+    score = 0
+    seen_letters = set()  # To track duplicate letters
+
+    for position, letter in enumerate(candidate_word):
+        # Add position-specific frequency
+        score += position_frequencies[position][letter]
+
+        # Optional: Penalize duplicate letters
+        if letter in seen_letters:
+            score *= 0.8  # Reduce score for duplicate letters
+        seen_letters.add(letter)
+```
+
+For each candidate word, I calculate a score by summing the position-specific frequencies of its letters. For example, if I'm considering "CHART":
+
+- Score for 'C' at position 0 = frequency of 'C' at position 0
+- Score for 'H' at position 1 = frequency of 'H' at position 1
+- And so on...
+
+### Penalizing Duplicate Letters
+
+One refinement I added was a penalty for duplicate letters. In most cases, it's better to test five different letters than to test the same letter multiple times. So I use a set to track which letters I've seen in the current word, and apply a penalty (multiply by 0.8) when I encounter a duplicate.
+
+This penalty factor was determined through experimentation. At 0.8, it still allows high-frequency duplicate letters to be worthwhile while generally favoring words with unique letters.
+
+### Mathematical Formulation
+
+If we want to express this algorithm mathematically, the score for a word $w$ is:
+
+$$
+\text{Score}(w) = \sum_{i=0}^{4} f_i(w_i) \cdot p_i
+$$
+
+Where:
+
+- $f_i(w_i)$ is the frequency of letter $w_i$ at position $i$ in the remaining possible words
+- $p_i$ is the penalty factor (1.0 for the first occurrence of a letter, 0.8 for subsequent occurrences)
+
+### Advantages and Limitations
+
+The biggest advantage of this approach is speed. It's dramatically faster than the entropy-based strategy because:
+
+1. We only need to count letter frequencies once per turn
+2. Scoring a word is just simple addition and doesn't require simulating every possible feedback pattern
+
+In my testing, this strategy is about 100x faster than the entropy-based approach, while still performing reasonably well. It typically solves Wordle puzzles in 3-5 guesses, which is very respectable.
+
+The main limitation is that it doesn't account for the information value of different feedback patterns. It just assumes that frequent letters are useful to guess, without considering how the feedback might partition the remaining word space.
+
+This can lead to suboptimal behavior in certain scenarios. For example, if we're down to words ending in "-ATCH" (as in the previous example), the frequency approach might not recognize that guessing "LATCH" would be more informative than guessing a word with high-frequency letters in other positions.
+
+Despite this limitation, the frequency-based strategy offers an excellent balance of performance and efficiency, making it a good choice for practical applications where computational resources are limited.
+
+## Strategy 3: Minimax Approach
+
+The third strategy I implemented takes a completely different angle on the problem. While the entropy method maximizes average information gain and the frequency method targets common letters, the minimax approach focuses on the worst-case scenario.
+
+### The Game Theory Connection
+
+Minimax is a decision rule used in game theory and decision making. The basic idea is to minimize the maximum possible loss - or in our case, to minimize the worst-case outcome.
+
+In Wordle terms, this means picking guesses that limit how bad our situation can get after receiving feedback. Even if we get unlucky, we want to ensure we're still in a manageable position.
+
+This approach is especially valuable if you're trying to maintain a streak in Wordle. You don't want to take risks that could leave you with 100+ possible words after your fourth guess, even if those guesses might sometimes get you the answer faster.
+
+### Implementing Minimax for Wordle
+
+Let's break down my implementation:
+
+```python
+def choose_best_guess(self, possible_words, attempts):
+
+    if attempts == 0:
+        return 'serai'  # pre-computed optimal first guess
+
+    # If there's only one possibility, return it immediately
+    if len(possible_words) == 1:
+        return possible_words[0]
+```
+
+I start with the same shortcuts as before, but notice that my pre-computed first word is different: "SERAI". When I analyzed thousands of Wordle games, this word gave the best worst-case scenario for the first guess. It's not necessarily the best on average, but it limits how bad your position can be after the first guess.
+
+Now let's get to the meat of the algorithm:
+
+```python
+best_worst_case = float('inf')
+best_guess = None
+
+# Consider ALL vocabulary words as potential guesses
+# but skip words we've already guessed
+for candidate_word in self.vocabulary:
+
+    # Skip words we've already guessed
+    if candidate_word in self.previous_guesses:
+        continue
+
+    feedback_patterns = {}
+
+    # But only evaluate against remaining possible solutions
+    for target_word in possible_words:
+        pattern = self._generate_feedback(candidate_word, target_word)
+
+        if pattern not in feedback_patterns:
+            feedback_patterns[pattern] = 0
+        feedback_patterns[pattern] += 1
+```
+
+The first part looks similar to the entropy approach. For each candidate word, I simulate the feedback I'd get against every possible target word and count how many words would give each feedback pattern.
+
+But the next part is where the strategies differ:
+
+```python
+# Find the worst-case scenario for this candidate
+worst_case = max(num_remaining_words for num_remaining_words in feedback_patterns.values())
+
+# If this candidate's worst case is better than our best so far
+if worst_case < best_worst_case:
+    best_worst_case = worst_case
+    best_guess = candidate_word
+```
+
+Instead of calculating the average or expected outcome, I look at the worst possible outcome for each candidate. The `worst_case` is the largest number of words that could remain after receiving any single feedback pattern.
+
+For example, if guessing "CRANE" might result in:
+
+- Pattern "G\_\_\_\_": 5 words remain
+- Pattern "Y\_\_\_\_": 12 words remain
+- Pattern "**\_**": 83 words remain
+
+Then the worst case for "CRANE" would be 83 remaining words.
+
+I then pick the candidate word that has the smallest worst-case value. This is the minimax principle in action - I'm minimizing the maximum potential damage.
+
+### Mathematical Formulation
+
+In mathematical terms, if we denote the number of words remaining after guessing word $w$ and receiving feedback pattern $p$ as $N(w, p)$, then the minimax strategy selects the word $w^*$ such that:
+
+$$
+w^* = \arg\min_{w \in W} \max_{p \in P(w)} N(w, p)
+$$
+
+Where:
+
+- $W$ is the set of all valid guess words
+- $P(w)$ is the set of all possible feedback patterns for word $w$
+- $N(w, p)$ is the number of words that would remain if we guess $w$ and receive pattern $p$
+- $\arg\min$ means "the value of $w$ that minimizes the expression"
+
+This formula essentially says: "Find the word where the worst possible outcome is as good as possible."
+
+### Why Minimax Makes Sense
+
+This approach makes a lot of sense for Wordle because:
+
+1. The game has a fixed number of attempts (6), so avoiding disaster is crucial
+2. In later stages, minimizing worst-case scenarios helps ensure we don't exhaust our guesses
+3. It's more conservative, which matches how many people play when they have a streak going
+
+Consider a scenario where we're down to our fifth guess with ten possible words remaining. The entropy strategy might pick a word that, on average, reduces the possibilities to 2.5 words. But what if there's a 20% chance it leaves us with 7 words? That could break our streak.
+
+The minimax strategy would instead pick a word that guarantees we have at most 5 words remaining, even in the worst case. This ensures we can solve the puzzle within our remaining guesses.
+
+## Comparative Analysis
+
+After implementing these three strategies, I needed to know which one actually performed best. So I ran a massive simulation, testing each strategy against all possible Wordle words. The results were fascinating and revealed some surprising strengths and weaknesses for each approach.
+
+### Methodology
+
+I tested each strategy against all 2,309 possible Wordle target words, measuring:
+
+- Success rate (% of puzzles solved within 6 attempts)
+- Average attempts needed
+- Median attempts
+- Distribution of attempts
+- Hardest words for each strategy
+
+I also created a composite "performance score" that rewards both success rate and efficiency, calculated as: `success_rate - (average_attempts * 10)`. This gives us a single number to rank strategies by, balancing the trade-off between solving accuracy and guess efficiency.
+
+### Overall Performance Comparison
+
+The entropy-based strategy was the clear winner, though all three performed remarkably well:
+
+| Strategy           | Success Rate | Avg Attempts | Median | Failures | Performance Score |
+| ------------------ | ------------ | ------------ | ------ | -------- | ----------------- |
+| Entropy Strategy   | 100.00%      | 4.17         | 4.0    | 0        | 58.3              |
+| Frequency Strategy | 100.00%      | 4.37         | 4.0    | 0        | 56.3              |
+| Minimax Strategy   | 100.00%      | 4.44         | 4.0    | 0        | 55.6              |
+
+I was honestly surprised that all three strategies achieved a perfect 100% success rate - I had expected at least a few failures. This confirms that Wordle is indeed solvable with an optimal strategy.
+
+The real difference was in efficiency. The entropy strategy needed, on average, 0.2 fewer guesses than frequency-based and 0.27 fewer than minimax. That might not sound like much, but over thousands of games, it adds up.
+
+### Distribution of Attempts
+
+Looking at the distribution of attempts reveals more interesting patterns:
+
+| Strategy           | 1        | 2         | 3           | 4            | 5           | 6           | >6  |
+| ------------------ | -------- | --------- | ----------- | ------------ | ----------- | ----------- | --- |
+| Entropy Strategy   | 0 (0.0%) | 4 (0.2%)  | 302 (13.1%) | 1361 (58.9%) | 581 (25.2%) | 61 (2.6%)   | 0   |
+| Frequency Strategy | 0 (0.0%) | 32 (1.4%) | 439 (19.0%) | 878 (38.0%)  | 566 (24.5%) | 394 (17.1%) | 0   |
+| Minimax Strategy   | 0 (0.0%) | 1 (0.0%)  | 166 (7.2%)  | 1068 (46.3%) | 968 (41.9%) | 106 (4.6%)  | 0   |
+
+Some key observations:
+
+1. **No strategy ever solved a puzzle in 1 guess** - not surprising given the size of the word space.
+2. **The frequency strategy had the most 2-guess and 3-guess solutions**, suggesting it can be very efficient when the target word contains common letters in common positions. When it hits, it hits big!
+3. **The entropy strategy dominated the 4-guess category**, solving nearly 59% of all puzzles in exactly 4 guesses. That's impressive consistency.
+4. **The minimax strategy had the most 5-guess solutions**, confirming its "slow but steady" approach.
+5. **The frequency strategy had the most 6-guess solutions** (17.1%), making it the riskiest if you're concerned about maintaining a streak.
+
+### The Hardest Words
+
+Each strategy struggled with different words:
+
+**Entropy Strategy's Hardest Words:**
+
+- aging (6 attempts)
+- aping (6 attempts)
+- axial (6 attempts)
+- belly (6 attempts)
+- berry (6 attempts)
+
+**Frequency Strategy's Hardest Words:**
+
+- aging (6 attempts)
+- alloy (6 attempts)
+- aloof (6 attempts)
+- alpha (6 attempts)
+- amass (6 attempts)
+
+**Minimax Strategy's Hardest Words:**
+
+- arena (6 attempts)
+- await (6 attempts)
+- aware (6 attempts)
+- baker (6 attempts)
+- baler (6 attempts)
+
+Looking at these "hard words," I noticed some patterns:
+
+- Words with repeated letters (like "berry") tend to be challenging
+- Words with uncommon letter patterns (like "axial") are difficult
+- Some words were universally hard (like "aging") across strategies
+
+What's particularly interesting is how different the hard words are between strategies. The minimax strategy struggled with completely different words than the other two, highlighting how differently these algorithms approach the game.
+
+### Strategy Trade-offs
+
+Based on these results, each strategy offers different advantages:
+
+**Entropy Strategy:**
+
+- Most efficient overall
+- Extremely consistent (nearly 59% of solutions in exactly 4 guesses)
+- Rarely needs 6 guesses (only 2.6% of the time)
+- Downside: Computationally expensive
+
+**Frequency Strategy:**
+
+- More "boom or bust" - has the most 2-3 guess solutions AND the most 6-guess solutions
+- Computationally efficient
+- Good for casual play where getting occasional quick wins is fun
+- Downside: Riskier for maintaining streaks
+
+**Minimax Strategy:**
+
+- Most conservative approach
+- Concentrates most solutions in the 4-5 guess range
+- Good for maintaining streaks
+- Downside: Rarely gets "lucky" quick solutions
+
+### Computational Efficiency
+
+I should also mention the massive differences in runtime:
+
+- Entropy Strategy: ~45 seconds per full game
+- Minimax Strategy: ~40 seconds per full game
+- Frequency Strategy: ~0.5 seconds per full game
+
+The frequency-based approach is roughly 80-90x faster than the other two! This makes it ideal for mobile applications or situations with limited computing power, despite being slightly less efficient in terms of guesses.
+
+One important optimization I implemented was pre-computing the optimal first guess for each strategy. Since the Wordle vocabulary is constant, we can calculate this once and hardcode it:
+
+- "tares" for the entropy strategy
+- "cares" for the frequency strategy
+- "serai" for the minimax strategy
+
+This saves significant computational time, especially for the entropy and minimax approaches which would otherwise need to evaluate thousands of potential words against thousands of possible targets just to make their first move.
+
+In the end, the right strategy depends on your priorities - maximum efficiency, computational speed, or risk avoidance. But what's amazing is that all three strategies achieve perfect success rates, confirming that computational approaches can indeed master the challenge of Wordle.
+
+## Conclusion
+
+After diving deep into Wordle through a computational lens, I've learned that this seemingly simple game offers a fascinating playground for testing different problem-solving approaches. The perfect 100% success rate across all three strategies confirms what many players suspect – with the right strategy, Wordle is always solvable within six attempts.
+
+Each approach taught me something different: entropy-based strategies offer the most efficient path but require heavy computation; frequency analysis provides a more intuitive and computationally lightweight approach; and minimax thinking helps manage risk when you're determined to maintain that precious streak.
+
+What's most interesting is how these algorithmic approaches mirror different human playing styles. Some players naturally gravitate toward high-information guesses like the entropy strategy, while others rely on common letter patterns or play it safe with worst-case scenario thinking.
+
+Next time you're puzzling over those colored squares, remember that beneath the surface lies a beautiful intersection of language, probability, and information theory. Whether you're a casual player or a dedicated streak-keeper, there's always a path to the solution – and computer science can help light the way.
+
+## Source Code
+
+All code discussed in this article is available in my GitHub repository: [GitHub - Bratet/wordle-solver](https://github.com/Bratet/wordle-solver)
+
+The repository includes the complete implementation of the Wordle game, all three solver strategies (Entropy-based, Frequency-based, and Minimax), and the analysis scripts used to generate the performance comparisons and visualizations.
+
+Feel free to clone the repository, experiment with the different strategies, and perhaps even develop your own approach to solving Wordle!

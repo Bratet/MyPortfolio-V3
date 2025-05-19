@@ -1,6 +1,6 @@
 {
-  "algorithms": 1,
+  "algorithms": 2,
   "optimization": 1,
-  "python": 1,
-  "data-science": 1
+  "data-science": 1,
+  "information-theory": 1
 }
