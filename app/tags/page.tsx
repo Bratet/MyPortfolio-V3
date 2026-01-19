@@ -5,6 +5,7 @@ import AnimatedTags from '@/components/AnimatedTags'
 export const metadata = genPageMetadata({
   title: 'Tags',
   description: 'Things I blog about',
+  path: '/tags',
 })
 
 export default function Tags() {

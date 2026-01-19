@@ -3,7 +3,7 @@ import ExperienceCard from '@/components/ExperienceCard'
 import { genPageMetadata } from 'app/seo'
 import AnimatedTitle from '@/components/AnimatedTitle'
 
-export const metadata = genPageMetadata({ title: 'Experience' })
+export const metadata = genPageMetadata({ title: 'Experience', path: '/experiences' })
 
 export default function Experience() {
   return (
