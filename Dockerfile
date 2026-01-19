@@ -1,5 +1,6 @@
 # Base stage
 FROM node:20-alpine AS base
+RUN corepack enable
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -8,10 +9,10 @@ WORKDIR /app
 
 # Copy yarn files
 COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
+COPY .yarn/releases ./.yarn/releases
 
 # Install dependencies
-RUN yarn install --immutable
+RUN yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
