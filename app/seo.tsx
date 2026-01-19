@@ -10,7 +10,13 @@ interface PageSEOProps {
   [key: string]: any
 }
 
-export function genPageMetadata({ title, description, image, path, ...rest }: PageSEOProps): Metadata {
+export function genPageMetadata({
+  title,
+  description,
+  image,
+  path,
+  ...rest
+}: PageSEOProps): Metadata {
   const pageUrl = path ? `${siteMetadata.siteUrl}${path}` : siteMetadata.siteUrl
 
   return {
