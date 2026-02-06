@@ -26,13 +26,19 @@ function ImageModal({ src, alt, onClose }: { src: string; alt: string; onClose: 
       >
         <button
           onClick={onClose}
-          className="absolute -right-3 -top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-800 shadow-lg transition-transform hover:scale-110 dark:bg-gray-800 dark:text-gray-200"
+          className="absolute -top-3 -right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-800 shadow-lg transition-transform hover:scale-110 dark:bg-gray-800 dark:text-gray-200"
           aria-label="Close"
         >
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={alt}
@@ -79,7 +85,7 @@ function FeaturedCard({ item, index }: { item: PortfolioItem; index: number }) {
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.4, delay: index * 0.1 }}
-        className={`md:col-span-2 rounded-lg border border-gray-200/80 border-l-4 ${config.border} bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700/60 dark:bg-gray-800/80`}
+        className={`rounded-lg border border-l-4 border-gray-200/80 md:col-span-2 ${config.border} bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700/60 dark:bg-gray-800/80`}
       >
         <div className="flex flex-col md:flex-row md:gap-6">
           {item.image && (
@@ -87,11 +93,11 @@ function FeaturedCard({ item, index }: { item: PortfolioItem; index: number }) {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4, delay: index * 0.1 + 0.15 }}
-              className="mb-4 md:mb-0 md:w-2/5 flex-shrink-0"
+              className="mb-4 flex-shrink-0 md:mb-0 md:w-2/5"
             >
               <button
                 onClick={() => setShowModal(true)}
-                className="group relative w-full cursor-pointer overflow-hidden rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                className="group focus:ring-primary-500 relative w-full cursor-pointer overflow-hidden rounded-md focus:ring-2 focus:ring-offset-2 focus:outline-none"
                 aria-label={`View ${item.title} certificate`}
               >
                 <Image
@@ -109,52 +115,54 @@ function FeaturedCard({ item, index }: { item: PortfolioItem; index: number }) {
               </button>
             </motion.div>
           )}
-        <div className="flex-1">
-          <span
-            className={`mb-3 inline-block rounded-full px-3 py-0.5 text-xs font-semibold ${config.color}`}
-          >
-            {config.label}
-          </span>
-          <h3 className="text-lg font-bold leading-snug text-gray-900 dark:text-gray-100">
-            {item.title}
-          </h3>
-          {item.subtitle && (
-            <p className="mt-1 text-sm italic text-gray-600 dark:text-gray-300">{item.subtitle}</p>
-          )}
-          <p className="mt-1 text-sm font-medium text-gray-600 dark:text-gray-300">
-            {item.link ? (
-              <Link
-                href={item.link}
-                className="hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
-              >
-                {item.organization}
-              </Link>
-            ) : (
-              item.organization
+          <div className="flex-1">
+            <span
+              className={`mb-3 inline-block rounded-full px-3 py-0.5 text-xs font-semibold ${config.color}`}
+            >
+              {config.label}
+            </span>
+            <h3 className="text-lg leading-snug font-bold text-gray-900 dark:text-gray-100">
+              {item.title}
+            </h3>
+            {item.subtitle && (
+              <p className="mt-1 text-sm text-gray-600 italic dark:text-gray-300">
+                {item.subtitle}
+              </p>
             )}
-          </p>
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-            {item.date}
-            {item.location && ` · ${item.location}`}
-          </p>
-          <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-            {item.description}
-          </p>
-          {item.technologies && item.technologies.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {item.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+            <p className="mt-1 text-sm font-medium text-gray-600 dark:text-gray-300">
+              {item.link ? (
+                <Link
+                  href={item.link}
+                  className="hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
                 >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
+                  {item.organization}
+                </Link>
+              ) : (
+                item.organization
+              )}
+            </p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              {item.date}
+              {item.location && ` · ${item.location}`}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+              {item.description}
+            </p>
+            {item.technologies && item.technologies.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {item.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
     </>
   )
 }
@@ -171,7 +179,7 @@ function PortfolioCard({ item, index }: { item: PortfolioItem; index: number }) 
       >
         {config.label}
       </span>
-      <h3 className="text-lg font-bold leading-snug text-gray-900 dark:text-gray-100">
+      <h3 className="text-lg leading-snug font-bold text-gray-900 dark:text-gray-100">
         {item.title}
       </h3>
       <p className="mt-1 text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -219,9 +227,7 @@ function PortfolioCard({ item, index }: { item: PortfolioItem; index: number }) 
           {cardContent}
         </Link>
       ) : (
-        <div className={cardClasses}>
-          {cardContent}
-        </div>
+        <div className={cardClasses}>{cardContent}</div>
       )}
     </motion.div>
   )

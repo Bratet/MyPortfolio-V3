@@ -22,7 +22,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex flex-col items-center pb-8 lg:pb-0 lg:pt-4"
+          className="flex flex-col items-center pb-8 lg:pt-4 lg:pb-0"
         >
           {avatar && (
             <motion.div
@@ -90,7 +90,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:justify-start lg:pt-4 lg:min-w-[180px]"
+          className="flex flex-row flex-wrap justify-center gap-3 lg:min-w-[180px] lg:flex-col lg:justify-start lg:pt-4"
         >
           <Link
             href="/blog"

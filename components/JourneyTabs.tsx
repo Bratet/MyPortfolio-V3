@@ -16,9 +16,7 @@ export default function JourneyTabs() {
       className="space-y-10"
     >
       <section>
-        <h2 className="mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">
-          Work Experience
-        </h2>
+        <h2 className="mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">Work Experience</h2>
         <div className="space-y-4">
           {workItems.map((item, index) => (
             <JourneyCard

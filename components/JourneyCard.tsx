@@ -34,7 +34,7 @@ export default function JourneyCard({ item, index }: JourneyCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.08 }}
-      className={`rounded-lg border border-gray-200/80 border-l-4 ${borderColor[item.type]} bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700/60 dark:bg-gray-800/80`}
+      className={`rounded-lg border border-l-4 border-gray-200/80 ${borderColor[item.type]} bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700/60 dark:bg-gray-800/80`}
     >
       {/* Type badge */}
       <span
@@ -54,7 +54,7 @@ export default function JourneyCard({ item, index }: JourneyCardProps) {
             height={28}
           />
         )}
-        <h3 className="text-lg font-bold leading-snug text-gray-900 dark:text-gray-100">
+        <h3 className="text-lg leading-snug font-bold text-gray-900 dark:text-gray-100">
           {item.title}
         </h3>
       </div>
