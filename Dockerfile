@@ -11,8 +11,9 @@ WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn/releases ./.yarn/releases
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
+# Install dependencies (HUSKY=0 skips the prepare script in Docker)
+ENV HUSKY=0
+RUN yarn install --immutable
 
 # Rebuild the source code only when needed
 FROM base AS builder

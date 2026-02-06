@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(node node_modules/.bin/next:*)",
+      "Bash(node_modules.binnext build:*)",
+      "Bash(node:*)",
+      "Bash(npx tsc:*)",
+      "WebSearch",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs"
+    ]
+  }
+}
