@@ -1,24 +1,29 @@
-interface Experience {
-  company: string
-  position: string
-  duration: string
-  location: string
+export type JourneyItemType = 'work' | 'education'
+
+export interface JourneyItem {
+  type: JourneyItemType
+  title: string
+  organization: string
+  date: string
+  location?: string
   description: string
-  achievements: string[]
-  technologies: string[]
+  highlights?: string[]
+  technologies?: string[]
+  collaborators?: string[]
+  link?: string
   logo?: string
-  website?: string
 }
 
-const experiencesData: Experience[] = [
+const journeyData: JourneyItem[] = [
   {
-    company: 'Artefact',
-    position: 'Data Scientist',
-    duration: 'Jun 2024 - Present',
+    type: 'work',
+    title: 'Data Scientist',
+    organization: 'Artefact',
+    date: 'May 2024 – Present',
     location: 'Casablanca, Morocco',
     description:
       'I developed and delivered data products to clients while consulting on their data needs.',
-    achievements: [
+    highlights: [
       'Built automated document processing service that reduced verification costs and to protect over 120 MDH through signature validation',
       'Created 86.23% accurate client scoring model for Bank of Africa to identify high-potential inactive users for targeted engagement',
       'Implemented GenAI-powered FAQ generation system for Orange using customer chat data and unsupervised learning to enhance support efficiency',
@@ -38,16 +43,17 @@ const experiencesData: Experience[] = [
       'AWS',
     ],
     logo: '/static/images/experiences/artefact.png',
-    website: 'https://www.artefact.com/',
+    link: 'https://www.artefact.com/',
   },
   {
-    company: 'Artefact',
-    position: 'Machine Learning Engineer Intern',
-    duration: 'Feb 2024 - Jun 2024',
+    type: 'work',
+    title: 'Data Scientist Intern',
+    organization: 'Artefact',
+    date: 'Feb 2024 – May 2024',
     location: 'Casablanca, Morocco',
     description:
       'Developed a natural language interface for complex database querying through comparative AI agent architecture analysis, enabling intuitive data access for non-technical users.',
-    achievements: [
+    highlights: [
       'Created a natural language interface for database querying by analyzing multiple AI agent architectures, making data accessible to non-technical users',
       'Benchmarked parameter-efficient fine-tuning techniques (QLoRA) across StarCoder and Llama v3 models for Text-to-SQL generation, optimizing hyperparameters',
     ],
@@ -62,16 +68,26 @@ const experiencesData: Experience[] = [
       'AI Agents',
     ],
     logo: '/static/images/experiences/artefact.png',
-    website: 'https://www.artefact.com/',
+    link: 'https://www.artefact.com/',
   },
   {
-    company: 'Yakeey',
-    position: 'Machine Learning Engineer Intern',
-    duration: 'Jun 2023 - Sep 2023',
+    type: 'education',
+    title: 'Engineering Degree',
+    organization: 'ENSIAS – National School of Computer Science and Systems Analysis',
+    date: '2021 – 2024',
+    location: 'Rabat, Morocco',
+    description:
+      'Studied Computer Science and Engineering with a focus on data science, machine learning, and software engineering.',
+  },
+  {
+    type: 'work',
+    title: 'Machine Learning Engineer Intern',
+    organization: 'Yakeey',
+    date: 'Jun 2023 – Aug 2023',
     location: 'Casablanca, Morocco',
     description:
       'Built an end-to-end pipeline for extracting building footprints from satellite imagery through evaluation of deep learning segmentation models.',
-    achievements: [
+    highlights: [
       'Engineered a pipeline extracting building footprints from satellite imagery',
       'Benchmarked multiple deep learning segmentation models (U-Net, Mask R-CNN, DeepLabv3+)',
       'Applied various image processing techniques to enhance performance',
@@ -87,16 +103,17 @@ const experiencesData: Experience[] = [
       'Qgis',
     ],
     logo: '/static/images/experiences/yakeey.png',
-    website: 'https://yakeey.com',
+    link: 'https://yakeey.com',
   },
   {
-    company: 'KubicBits',
-    position: 'Algorithm & Backend Engineer Intern',
-    duration: 'Jun 2022 - Sep 2022',
+    type: 'work',
+    title: 'Algorithm & Backend Engineer Intern',
+    organization: 'KubicBits',
+    date: 'Jun 2021 – Sep 2021',
     location: 'Casablanca, Morocco',
     description:
       'Developed an optimized vehicle routing algorithm handling multiple configurations and constraints for production use.',
-    achievements: [
+    highlights: [
       'Delivered 30% improvements in both processing speed and solution quality through algorithm optimization techniques',
     ],
     technologies: [
@@ -110,8 +127,8 @@ const experiencesData: Experience[] = [
       'Git',
     ],
     logo: '/static/images/experiences/kubicbits.png',
-    website: 'https://www.kubicbits.com/',
+    link: 'https://www.kubicbits.com/',
   },
 ]
 
-export default experiencesData
+export default journeyData
