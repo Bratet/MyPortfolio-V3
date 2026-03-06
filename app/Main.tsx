@@ -17,12 +17,12 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
 
   return (
     <>
-      <div className="pt-6 pb-10 lg:grid lg:grid-cols-[auto_1fr_auto]">
+      <div className="pt-6 pb-10 xl:grid xl:grid-cols-[auto_1fr_auto]">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex flex-col items-center pb-8 lg:pt-4 lg:pb-0"
+          className="flex flex-col items-center pb-8 xl:pt-4 xl:pb-0"
         >
           {avatar && (
             <motion.div
@@ -81,7 +81,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
-          className="prose dark:prose-invert max-w-none pb-8 lg:px-12 lg:pb-0"
+          className="prose dark:prose-invert max-w-none pb-8 xl:px-12 xl:pb-0"
         >
           <MDXLayoutRenderer code={authorBodyCode} />
         </motion.div>
@@ -90,7 +90,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex flex-row flex-wrap justify-center gap-3 lg:min-w-[180px] lg:flex-col lg:justify-start lg:pt-4"
+          className="flex flex-row flex-wrap justify-center gap-3 xl:min-w-[180px] xl:flex-col xl:justify-start xl:pt-4"
         >
           <Link
             href="/blog"
