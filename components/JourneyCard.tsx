@@ -41,7 +41,7 @@ export default function JourneyCard({ item, index }: JourneyCardProps) {
       />
 
       {/* Card */}
-      <div className="rounded-xl bg-white p-4 ring-1 shadow-sm ring-gray-200/60 transition-all duration-300 hover:shadow-md sm:p-6 dark:bg-gray-900/70 dark:ring-gray-800/60">
+      <div className="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200/60 transition-all duration-300 hover:shadow-md sm:p-6 dark:bg-gray-900/70 dark:ring-gray-800/60">
         {/* Badge + Date row */}
         <div className="flex flex-wrap items-center gap-2">
           <span

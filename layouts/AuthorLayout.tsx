@@ -33,7 +33,7 @@ export default function AuthorLayout({ children, content }: Props) {
         </motion.div>
         <div
           ref={ref}
-          className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0"
+          className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8"
         >
           <motion.div
             initial={{ opacity: 0, x: -50 }}

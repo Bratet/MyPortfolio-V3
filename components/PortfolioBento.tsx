@@ -94,7 +94,7 @@ function FeaturedCard({ item, index }: { item: PortfolioItem; index: number }) {
         initial={{ opacity: 0, y: 24 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
         transition={{ duration: 0.45, delay: index * 0.1, ease: 'easeOut' }}
-        className={`group relative overflow-hidden rounded-xl bg-white ring-1 shadow-sm ring-gray-200/60 transition-all duration-300 hover:shadow-xl md:col-span-2 ${config.glow} dark:bg-gray-900/70 dark:ring-gray-800/60`}
+        className={`group relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200/60 transition-all duration-300 hover:shadow-xl md:col-span-2 ${config.glow} dark:bg-gray-900/70 dark:ring-gray-800/60`}
       >
         {/* Top accent gradient */}
         <div className={`h-1 w-full bg-gradient-to-r ${config.accent}`} />
