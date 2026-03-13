@@ -24,40 +24,45 @@ const AnimatedLatestPost = ({ post, index }: AnimatedLatestPostProps) => {
     <motion.li
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="py-12"
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className="group list-none py-10"
     >
       <article>
         <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
           <dl>
             <dt className="sr-only">Published on</dt>
-            <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
+            <dd className="text-sm font-medium tracking-wide text-gray-400 uppercase dark:text-gray-500">
               <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
             </dd>
           </dl>
-          <div className="space-y-5 xl:col-span-3">
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                  <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
-                    {title}
-                  </Link>
-                </h2>
-                <div className="flex flex-wrap">
-                  {tags.map((tag) => (
-                    <Tag key={tag} text={tag} />
-                  ))}
-                </div>
+          <div className="space-y-3 xl:col-span-3">
+            <div>
+              <h3 className="group-hover:text-primary-600 dark:group-hover:text-primary-400 text-2xl font-bold tracking-tight text-gray-900 transition-colors duration-200 dark:text-gray-100">
+                <Link href={`/blog/${slug}`}>{title}</Link>
+              </h3>
+              <div className="mt-2 flex flex-wrap gap-1">
+                {tags.map((tag) => (
+                  <Tag key={tag} text={tag} />
+                ))}
               </div>
-              <div className="prose max-w-none text-gray-500 dark:text-gray-400">{summary}</div>
             </div>
-            <div className="text-base leading-6 font-medium">
+            <p className="leading-relaxed text-gray-500 dark:text-gray-400">{summary}</p>
+            <div>
               <Link
                 href={`/blog/${slug}`}
-                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                className="group/link text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center text-sm font-semibold"
                 aria-label={`Read more: "${title}"`}
               >
-                Read more &rarr;
+                Read more
+                <svg
+                  className="ml-1.5 h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
           </div>

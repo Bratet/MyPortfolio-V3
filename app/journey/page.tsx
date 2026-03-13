@@ -10,12 +10,12 @@ export const metadata = genPageMetadata({
 
 export default function Journey() {
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div>
       <AnimatedTitle
         title="My Journey"
         description="My path through tech — work, projects, competitions, and everything in between"
       />
-      <div className="container py-12">
+      <div className="py-8">
         <JourneyTabs />
       </div>
     </div>

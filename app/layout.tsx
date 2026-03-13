@@ -4,6 +4,7 @@ import 'remark-github-blockquote-alert/alert.css'
 
 import { Space_Grotesk } from 'next/font/google'
 import { PostHogProvider } from './posthog-provider'
+import PostHogPageView from './posthog-pageview'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
         <ThemeProviders>
           <PostHogProvider>
+            <PostHogPageView />
             <SectionContainer>
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
                 <Header />

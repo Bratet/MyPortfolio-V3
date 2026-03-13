@@ -10,9 +10,9 @@ export const metadata = genPageMetadata({
 
 export default function Portfolio() {
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div>
       <AnimatedTitle title="Portfolio" description="Publications, projects, and achievements" />
-      <div className="container py-12">
+      <div className="py-8">
         <PortfolioBento />
       </div>
     </div>
