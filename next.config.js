@@ -7,7 +7,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // You might need to insert additional domains in script-src if you are using external services
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://giscus.app https://us.i.posthog.com https://us-assets.i.posthog.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://giscus.app https://eu.i.posthog.com https://eu-assets.i.posthog.com;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src *.s3.amazonaws.com;
@@ -86,11 +86,11 @@ module.exports = () => {
       return [
         {
           source: '/ingest/static/:path*',
-          destination: 'https://us-assets.i.posthog.com/static/:path*',
+          destination: 'https://eu-assets.i.posthog.com/static/:path*',
         },
         {
           source: '/ingest/:path*',
-          destination: 'https://us.i.posthog.com/:path*',
+          destination: 'https://eu.i.posthog.com/:path*',
         },
       ]
     },
