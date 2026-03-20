@@ -1,9 +1,10 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: "Ahmed's Personal Blog",
+  title: "Ahmed Mrabet — Data Scientist & ML Engineer",
   author: 'Ahmed Mrabet',
   headerTitle: 'Ahmed Mrabet',
-  description: 'Check out my latest articles',
+  description:
+    'Ahmed Mrabet is a Data Scientist and Machine Learning Engineer specializing in Computer Vision and NLP. Explore his blog, portfolio, and journey in AI and software engineering.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://ahmedmrabet.me',

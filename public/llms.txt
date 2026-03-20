@@ -1,0 +1,53 @@
+# Ahmed Mrabet
+
+> Data Scientist and Machine Learning Engineer specializing in Computer Vision and NLP.
+
+## About
+
+Ahmed Mrabet is a Data Scientist at Artefact, where he turns complex data into actionable insights. He holds a Master's in AI Engineering and specializes in Computer Vision and Natural Language Processing. Beyond AI, he brings strong foundations in software engineering, algorithms, and information theory.
+
+## Links
+
+- Website: https://ahmedmrabet.me
+- Blog: https://ahmedmrabet.me/blog
+- Portfolio: https://ahmedmrabet.me/portfolio
+- Journey: https://ahmedmrabet.me/journey
+- GitHub: https://github.com/Bratet
+- LinkedIn: https://www.linkedin.com/in/ahmedmrabet/
+- X/Twitter: https://x.com/Braatet
+- Medium: https://medium.com/@mrabetahmed
+- Email: ahmedmrabet.00@gmail.com
+
+## Expertise
+
+- Machine Learning & Deep Learning
+- Computer Vision
+- Natural Language Processing (NLP)
+- Data Science & Analytics
+- Software Engineering
+- Algorithms & Information Theory
+- Python, PyTorch, TensorFlow
+- MLOps & Model Deployment
+
+## Publications
+
+- "Enhanced AI-Powered Energy Management Diagnostics: Expert System Integration with LLM for Predictive Maintenance" — Published at ICSMAI'25, Springer (October 2025)
+
+## Notable Achievements
+
+- 1st Place Nationally, 2nd Internationally — BCG Platinion Hackathon (2023)
+- Top 12 Nationally — International Mathematical Olympiad Preparation, Morocco (2019-2020)
+
+## Projects
+
+- Pronesis: Co-founded an AI-powered career platform helping users navigate career paths with personalized guidance and intelligent recommendations (https://pronesis.pro)
+
+## Blog Topics
+
+Ahmed writes about algorithms, optimization, information theory, data science, and machine learning. Notable articles include:
+- "Solving Wordle With Computer Science" — applying information theory to the popular word game
+- "Solving Travelling Salesman Problem With Variable Neighborhood Search" — optimization algorithms
+
+## Contact
+
+For collaborations, questions, or speaking opportunities, reach out via email at ahmedmrabet.00@gmail.com or connect on LinkedIn.

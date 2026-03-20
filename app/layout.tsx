@@ -20,9 +20,10 @@ const space_grotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteMetadata.siteUrl),
   title: {
     default: siteMetadata.title,
-    template: `%s | ${siteMetadata.title}`,
+    template: `%s | Ahmed Mrabet`,
   },
   description: siteMetadata.description,
   openGraph: {
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: siteMetadata.siteUrl,
+    canonical: '/',
     types: {
       'application/rss+xml': `${siteMetadata.siteUrl}/feed.xml`,
     },

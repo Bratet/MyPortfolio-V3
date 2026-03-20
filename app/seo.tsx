@@ -26,7 +26,7 @@ export function genPageMetadata({
       canonical: pageUrl,
     },
     openGraph: {
-      title: `${title} | ${siteMetadata.title}`,
+      title: `${title} | Ahmed Mrabet`,
       description: description || siteMetadata.description,
       url: pageUrl,
       siteName: siteMetadata.title,
@@ -35,7 +35,7 @@ export function genPageMetadata({
       type: 'website',
     },
     twitter: {
-      title: `${title} | ${siteMetadata.title}`,
+      title: `${title} | Ahmed Mrabet`,
       card: 'summary_large_image',
       images: image ? [image] : [siteMetadata.socialBanner],
     },
