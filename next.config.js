@@ -82,6 +82,25 @@ module.exports = () => {
       ],
       unoptimized,
     },
+    async redirects() {
+      return [
+        {
+          source: '/journey',
+          destination: '/about',
+          permanent: true,
+        },
+        {
+          source: '/portfolio',
+          destination: '/about',
+          permanent: true,
+        },
+        {
+          source: '/tags',
+          destination: '/blog',
+          permanent: true,
+        },
+      ]
+    },
     async rewrites() {
       return [
         {
