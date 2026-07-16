@@ -9,27 +9,37 @@ interface AnimatedTitleProps {
 
 const AnimatedTitle = ({ title, description }: AnimatedTitleProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-3 pt-8 pb-10 md:space-y-4"
-    >
+    <div className="space-y-3 pt-8 pb-10 md:space-y-4">
       <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
-        {title}
+        {title.split(' ').map((word, index) => (
+          <motion.span
+            key={`${word}-${index}`}
+            initial={{ opacity: 0, y: 14, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="mr-[0.3em] inline-block last:mr-0"
+          >
+            {word}
+          </motion.span>
+        ))}
       </h1>
       {description && (
-        <p className="max-w-2xl text-lg leading-relaxed text-gray-500 dark:text-gray-400">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-2xl text-lg leading-relaxed text-gray-500 dark:text-gray-400"
+        >
           {description}
-        </p>
+        </motion.p>
       )}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
-        transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+        transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="from-primary-400 h-px w-16 origin-left bg-gradient-to-r to-transparent"
       />
-    </motion.div>
+    </div>
   )
 }
 

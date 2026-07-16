@@ -21,7 +21,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
       <div className="relative py-10 sm:py-14 md:py-20">
         {/* Atmospheric gradient orb */}
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="bg-primary-400/[0.07] dark:bg-primary-500/[0.04] absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]" />
+          <div className="bg-primary-400/[0.07] dark:bg-primary-500/[0.04] animate-orb absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]" />
         </div>
 
         <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-14">
@@ -33,7 +33,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="relative flex-shrink-0"
             >
-              <div className="from-primary-300/25 to-primary-500/25 absolute -inset-3 rounded-full bg-gradient-to-tr blur-2xl" />
+              <div className="from-primary-300/25 to-primary-500/25 animate-glow absolute -inset-3 rounded-full bg-gradient-to-tr blur-2xl" />
               <Image
                 src={avatar}
                 alt="avatar"
@@ -47,14 +47,23 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
           {/* Text content */}
           <div className="text-center md:text-left">
             {/* Name */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl dark:text-gray-100"
-            >
-              {name}
-            </motion.h1>
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl dark:text-gray-100">
+              {name.split(' ').map((word, index) => (
+                <motion.span
+                  key={`${word}-${index}`}
+                  initial={{ opacity: 0, y: 14, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  transition={{
+                    duration: 0.55,
+                    delay: 0.15 + index * 0.09,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="mr-[0.3em] inline-block last:mr-0"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </h1>
 
             {/* Role */}
             <motion.p
@@ -101,7 +110,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
             >
               <Link
                 href="/blog"
-                className="group hover:bg-primary-600 hover:shadow-primary-500/20 dark:hover:bg-primary-400 dark:hover:shadow-primary-400/20 inline-flex items-center rounded-full bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg dark:bg-gray-100 dark:text-gray-900 dark:hover:text-white"
+                className="group btn-shine hover:bg-primary-600 hover:shadow-primary-500/20 dark:hover:bg-primary-400 dark:hover:shadow-primary-400/20 inline-flex items-center rounded-full bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg active:scale-[0.98] dark:bg-gray-100 dark:text-gray-900 dark:hover:text-white"
               >
                 Read My Blog
                 <svg
@@ -116,7 +125,7 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
               </Link>
               <Link
                 href="/about"
-                className="group hover:border-primary-300 hover:bg-primary-50/50 hover:text-primary-600 dark:hover:border-primary-700 dark:hover:bg-primary-950/30 dark:hover:text-primary-400 inline-flex items-center rounded-full border border-gray-300 px-6 py-2.5 text-sm font-semibold text-gray-700 transition-all duration-300 dark:border-gray-700 dark:text-gray-300"
+                className="group hover:border-primary-300 hover:bg-primary-50/50 hover:text-primary-600 dark:hover:border-primary-700 dark:hover:bg-primary-950/30 dark:hover:text-primary-400 inline-flex items-center rounded-full border border-gray-300 px-6 py-2.5 text-sm font-semibold text-gray-700 transition-all duration-300 active:scale-[0.98] dark:border-gray-700 dark:text-gray-300"
               >
                 About Me
                 <svg
