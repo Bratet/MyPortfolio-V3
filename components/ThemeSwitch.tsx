@@ -1,6 +1,7 @@
 'use client'
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { useTheme } from 'next-themes'
 import {
   Menu,
@@ -58,13 +59,52 @@ const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme, resolvedTheme } = useTheme()
 
+  const buttonWrapperRef = useRef<HTMLDivElement>(null)
+
+  const handleThemeChange = (newTheme: string) => {
+    const doc = document as Document & {
+      startViewTransition?: (callback: () => void) => { ready: Promise<void> }
+    }
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!doc.startViewTransition || prefersReducedMotion) {
+      setTheme(newTheme)
+      return
+    }
+
+    const transition = doc.startViewTransition(() => {
+      flushSync(() => setTheme(newTheme))
+    })
+
+    transition.ready.then(() => {
+      const rect = buttonWrapperRef.current?.getBoundingClientRect()
+      const x = rect ? rect.left + rect.width / 2 : window.innerWidth
+      const y = rect ? rect.top + rect.height / 2 : 0
+      const radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      )
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        {
+          duration: 550,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      )
+    })
+  }
+
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), [])
 
   return (
     <div className="flex items-center">
       <Menu as="div" className="relative inline-block text-left">
-        <div className="hover:text-primary-500 dark:hover:text-primary-400 flex items-center justify-center">
+        <div
+          ref={buttonWrapperRef}
+          className="hover:text-primary-500 dark:hover:text-primary-400 flex items-center justify-center"
+        >
           <MenuButton aria-label="Theme switcher">
             {mounted ? resolvedTheme === 'dark' ? <Moon /> : <Sun /> : <Blank />}
           </MenuButton>
@@ -79,7 +119,7 @@ const ThemeSwitch = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <MenuItems className="ring-opacity-5 absolute right-0 z-50 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-hidden dark:bg-gray-800">
-            <RadioGroup value={theme} onChange={setTheme}>
+            <RadioGroup value={theme} onChange={handleThemeChange}>
               <div className="p-1">
                 <Radio value="light">
                   <MenuItem>
