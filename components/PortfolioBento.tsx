@@ -93,6 +93,7 @@ function FeaturedCard({ item, index }: { item: PortfolioItem; index: number }) {
         ref={ref}
         initial={{ opacity: 0, y: 24 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+        whileHover={{ y: -3 }}
         transition={{ duration: 0.45, delay: index * 0.1, ease: 'easeOut' }}
         className={`group relative overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200/60 transition-all duration-300 hover:shadow-xl md:col-span-2 ${config.glow} dark:bg-gray-900/70 dark:ring-gray-800/60`}
       >
@@ -244,6 +245,7 @@ function PortfolioCard({ item, index }: { item: PortfolioItem; index: number }) 
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      whileHover={{ y: -3 }}
       transition={{ duration: 0.45, delay: index * 0.1, ease: 'easeOut' }}
     >
       {item.link ? (

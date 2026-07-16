@@ -27,21 +27,27 @@ interface JourneyCardProps {
 
 export default function JourneyCard({ item, index }: JourneyCardProps) {
   const config = typeConfig[item.type]
+  const staggerDelay = Math.min(index, 3) * 0.07
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5, delay: staggerDelay, ease: [0.22, 1, 0.36, 1] }}
       className="relative pl-8 sm:pl-10"
     >
-      {/* Timeline dot */}
-      <div
+      {/* Timeline dot pops in as the card reveals */}
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.35, delay: staggerDelay + 0.15, ease: [0.22, 1, 0.36, 1] }}
         className={`absolute top-7 left-[6px] h-[11px] w-[11px] rounded-full border-[2.5px] bg-white ${config.dot} dark:bg-gray-950`}
       />
 
       {/* Card */}
-      <div className="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200/60 transition-all duration-300 hover:shadow-md sm:p-6 dark:bg-gray-900/70 dark:ring-gray-800/60">
+      <div className="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-200/60 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-6 dark:bg-gray-900/70 dark:ring-gray-800/60">
         {/* Badge + Date row */}
         <div className="flex flex-wrap items-center gap-2">
           <span
@@ -113,16 +119,13 @@ export default function JourneyCard({ item, index }: JourneyCardProps) {
         {/* Technologies */}
         {item.technologies && item.technologies.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
-            {item.technologies.map((tech, i) => (
-              <motion.span
+            {item.technologies.map((tech) => (
+              <span
                 key={tech}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, delay: 0.1 + i * 0.02 }}
                 className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400"
               >
                 {tech}
-              </motion.span>
+              </span>
             ))}
           </div>
         )}
