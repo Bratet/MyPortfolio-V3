@@ -31,22 +31,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/portfolio`,
+      url: `${siteUrl}/about`,
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
-    },
-    {
-      url: `${siteUrl}/journey`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/tags`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.5,
     },
   ]
 

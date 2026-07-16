@@ -115,25 +115,10 @@ export default function Home({ posts, authorContent, authorBodyCode }) {
                 </svg>
               </Link>
               <Link
-                href="/portfolio"
+                href="/about"
                 className="group hover:border-primary-300 hover:bg-primary-50/50 hover:text-primary-600 dark:hover:border-primary-700 dark:hover:bg-primary-950/30 dark:hover:text-primary-400 inline-flex items-center rounded-full border border-gray-300 px-6 py-2.5 text-sm font-semibold text-gray-700 transition-all duration-300 dark:border-gray-700 dark:text-gray-300"
               >
-                Portfolio
-                <svg
-                  className="ml-2 h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <Link
-                href="/journey"
-                className="group hover:border-primary-300 hover:bg-primary-50/50 hover:text-primary-600 dark:hover:border-primary-700 dark:hover:bg-primary-950/30 dark:hover:text-primary-400 inline-flex items-center rounded-full border border-gray-300 px-6 py-2.5 text-sm font-semibold text-gray-700 transition-all duration-300 dark:border-gray-700 dark:text-gray-300"
-              >
-                My Journey
+                About Me
                 <svg
                   className="ml-2 h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
                   fill="none"
