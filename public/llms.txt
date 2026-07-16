@@ -10,8 +10,7 @@ Ahmed Mrabet is a Data Scientist at Artefact, where he turns complex data into a
 
 - Website: https://ahmedmrabet.me
 - Blog: https://ahmedmrabet.me/blog
-- Portfolio: https://ahmedmrabet.me/portfolio
-- Journey: https://ahmedmrabet.me/journey
+- About: https://ahmedmrabet.me/about
 - GitHub: https://github.com/Bratet
 - LinkedIn: https://www.linkedin.com/in/ahmedmrabet/
 - X/Twitter: https://x.com/Braatet
