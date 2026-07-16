@@ -1,6 +1,6 @@
 import { genPageMetadata } from 'app/seo'
 import AnimatedTitle from '@/components/AnimatedTitle'
-import JourneyTabs from '@/components/JourneyTabs'
+import JourneySections from '@/components/JourneySections'
 
 export const metadata = genPageMetadata({
   title: 'My Journey',
@@ -16,7 +16,7 @@ export default function Journey() {
         description="My path through tech — work, projects, competitions, and everything in between"
       />
       <div className="py-8">
-        <JourneyTabs />
+        <JourneySections />
       </div>
     </div>
   )

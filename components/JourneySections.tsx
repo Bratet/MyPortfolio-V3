@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import journeyData from '@/data/journeyData'
 import JourneyCard from './JourneyCard'
 
-export default function JourneyTabs() {
+export default function JourneySections() {
   const workItems = journeyData.filter((item) => item.type === 'work')
   const educationItems = journeyData.filter((item) => item.type === 'education')
 
