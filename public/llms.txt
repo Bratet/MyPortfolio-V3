@@ -15,7 +15,7 @@ Ahmed Mrabet is a Data Scientist at Artefact, where he turns complex data into a
 - LinkedIn: https://www.linkedin.com/in/ahmedmrabet/
 - X/Twitter: https://x.com/Brateeet
 - Medium: https://medium.com/@mrabetahmed
-- Email: ahmedmrabet.00@gmail.com
+- Email: ahmedmrabet.002@gmail.com
 
 ## Expertise
 
@@ -49,4 +49,4 @@ Ahmed writes about algorithms, optimization, information theory, data science, a
 
 ## Contact
 
-For collaborations, questions, or speaking opportunities, reach out via email at ahmedmrabet.00@gmail.com or connect on LinkedIn.
+For collaborations, questions, or speaking opportunities, reach out via email at ahmedmrabet.002@gmail.com or connect on LinkedIn.
