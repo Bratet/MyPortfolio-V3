@@ -14,7 +14,7 @@ const siteMetadata = {
   // mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'ahmedmrabet.00@gmail.com',
   github: 'https://github.com/Bratet',
-  x: 'https://x.com/Braatet',
+  x: 'https://x.com/Brateeet',
   // twitter: 'https://twitter.com/Twitter',
   // facebook: 'https://facebook.com',
   // youtube: 'https://youtube.com',
