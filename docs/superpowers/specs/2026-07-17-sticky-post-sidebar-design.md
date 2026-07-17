@@ -32,8 +32,12 @@ Extract the author block currently inlined at `PostLayout.tsx:64-95` into a comp
 - The existing author `<dl>` keeps its current position and gains `xl:hidden`. It remains the mobile byline under the title.
 - The `<footer>` becomes the single sticky column:
   - on the `<footer>` itself: `xl:col-start-1 xl:row-start-1 xl:row-span-2` — its cell now spans the article's full height and acts as the travel track.
-  - an inner wrapper: `xl:sticky xl:top-6` — this is what pins.
-  - overflow guard on the wrapper: `xl:max-h-[calc(100vh-3rem)] xl:overflow-y-auto` plus the existing `no-scrollbar` utility (`css/tailwind.css:149`), so long prev/next titles scroll inside the column rather than clip.
+  - an inner wrapper: `xl:sticky xl:top-0 xl:flex xl:h-screen xl:items-center` — this pins, and keeps the column vertically centred in the viewport.
+  - overflow guard on the scroll box inside it: `xl:max-h-screen xl:overflow-y-auto xl:py-8` plus the existing `no-scrollbar` utility (`css/tailwind.css:149`), so long prev/next titles scroll inside the column rather than clip.
+
+Centring uses a viewport-height flex wrapper rather than `top: 50%`: for a sticky box, a percentage inset resolves against the **containing block** — the ~11,000px track — not the viewport, so `top-1/2` would compute to thousands of pixels and break the pin.
+
+Accepted trade-off: because the track starts below the full-width post header, at `scrollY: 0` the centred column hangs below the fold by roughly 130px, so "Back to the blog" is not visible until the reader scrolls. It self-corrects immediately and every scrolled state is exactly centred.
 - A `hidden xl:block` `AuthorCard` goes at the top of the sticky wrapper, above the tags, with a bottom divider matching the column's existing `xl:divide-y` treatment.
 - The inert `xl:col-start-1 xl:row-start-2` on the footer's inner div is removed.
 
