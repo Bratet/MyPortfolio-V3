@@ -206,13 +206,16 @@ input:-webkit-autofill:focus {
 @keyframes orb-drift {
   0%,
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    translate: -50% -50%;
+    scale: 1;
   }
   33% {
-    transform: translate(-44%, -55%) scale(1.08);
+    translate: -44% -55%;
+    scale: 1.08;
   }
   66% {
-    transform: translate(-56%, -46%) scale(0.95);
+    translate: -56% -46%;
+    scale: 0.95;
   }
 }
 
