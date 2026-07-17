@@ -12,7 +12,7 @@ export default function ReadingProgress() {
   return (
     <motion.div
       style={{ scaleX }}
-      className="from-primary-500 via-primary-400 to-primary-500 fixed inset-x-0 top-0 z-60 h-0.5 origin-left bg-gradient-to-r"
+      className="from-primary-500 via-primary-400 to-primary-500 fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-gradient-to-r"
       aria-hidden="true"
     />
   )

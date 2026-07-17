@@ -76,23 +76,27 @@ const ThemeSwitch = () => {
       flushSync(() => setTheme(newTheme))
     })
 
-    transition.ready.then(() => {
-      const rect = buttonWrapperRef.current?.getBoundingClientRect()
-      const x = rect ? rect.left + rect.width / 2 : window.innerWidth
-      const y = rect ? rect.top + rect.height / 2 : 0
-      const radius = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
-      )
-      document.documentElement.animate(
-        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-        {
-          duration: 550,
-          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-          pseudoElement: '::view-transition-new(root)',
-        }
-      )
-    })
+    transition.ready
+      .then(() => {
+        const rect = buttonWrapperRef.current?.getBoundingClientRect()
+        const x = rect ? rect.left + rect.width / 2 : window.innerWidth
+        const y = rect ? rect.top + rect.height / 2 : 0
+        const radius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        )
+        document.documentElement.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          {
+            duration: 550,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        )
+      })
+      .catch(() => {
+        // Transition skipped (hidden tab, rapid toggle) — theme still applied
+      })
   }
 
   // When mounted on client, now we can show the UI
